@@ -1,5 +1,6 @@
 package edu.cnm.deepdive.helloworld;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,9 +16,14 @@ public class MainActivity extends AppCompatActivity {
     btnMainActivity.setOnClickListener(new View.OnClickListener(){
       @Override
       public void onClick(View v){
-        View txtHelloWorld = findViewById(R.id.txtHelloWorld);
-        txtHelloWorld.setVisibility(View.VISIBLE);
+        launchAppActivity();
       }
     });
+  }
+
+  private void launchAppActivity() {
+    Intent intent = new Intent(this, AppActivity.class);
+    startActivity(intent);
+    finish();
   }
 }
