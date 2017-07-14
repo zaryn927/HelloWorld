@@ -7,9 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import edu.cnm.deepdive.helloworld.R;
 
@@ -26,6 +28,7 @@ public class ListFragment extends Fragment {
 
   private OnFragmentInteractionListener mListener;
   private ListView mListView;
+  private Button mBtnRemoveFragment;
 
   public ListFragment() {
     // Required empty public constructor
@@ -68,6 +71,15 @@ public class ListFragment extends Fragment {
     // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.fragment_list, container, false);
     mListView = (ListView)view.findViewById(R.id.fragmentList);
+    mBtnRemoveFragment = (Button)view.findViewById(R.id.btnRemoveFragment);
+    mBtnRemoveFragment.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if (mListener != null) {
+          mListener.onCloseClicked();
+        }
+      }
+    });
     return view;
   }
 
@@ -99,6 +111,6 @@ public class ListFragment extends Fragment {
    * >Communicating with Other Fragments</a> for more information.
    */
   public interface OnFragmentInteractionListener {
-
+    void onCloseClicked();
   }
 }

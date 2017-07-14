@@ -38,4 +38,9 @@ public class AppActivity extends AppCompatActivity implements ListFragment.OnFra
     fragmentTransaction.remove(mListFragment);
     fragmentTransaction.commit();
   }
+
+  @Override
+  public void onCloseClicked() {
+    removeFragment();
+  }
 }
