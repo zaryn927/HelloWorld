@@ -14,6 +14,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import edu.cnm.deepdive.helloworld.R;
+import edu.cnm.deepdive.helloworld.adapters.ImageListAdapter;
+import edu.cnm.deepdive.helloworld.api.API;
+import edu.cnm.deepdive.helloworld.objects.GalleryResponse;
+import edu.cnm.deepdive.helloworld.objects.Image;
+import java.util.List;
+import rx.SingleSubscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,18 +59,29 @@ public class ListFragment extends Fragment {
   @Override
   public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    String[] strings = new String[] {
-        "First",
-        "Second",
-        "Third",
-        "Fourth"
-    };
-    ArrayAdapter<String> adapter = new ArrayAdapter<>(
-        getContext(),
-        android.R.layout.simple_list_item_1,
-        strings
-    );
-    mListView.setAdapter(adapter);
+
+    API.subredditGallery("cats")
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new SingleSubscriber<GalleryResponse>() {
+          @Override
+          public void onSuccess(GalleryResponse value) {
+            List<Image> data = value.getData();
+            if (data != null) {
+              ImageListAdapter adapter = new ImageListAdapter(
+                  getContext(),
+                  data
+              );
+              mListView.setAdapter(adapter);
+            }
+          }
+
+          @Override
+          public void onError(Throwable error) {
+            error.printStackTrace();
+          }
+        });
+
   }
 
   @Override
