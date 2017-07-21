@@ -1,6 +1,6 @@
 <resources>
-  <string name="app_name">Hello World</string>
-  <string name="lets_go">Let\'s Go</string>
-  <string name="load">Load</string>
-  <string name="remove">Remove</string>
+  <string name="app_name">Cats</string>
+  <string name="lets_go">Let\'s Look at Some Cats</string>
+  <string name="load">Load Cats</string>
+  <string name="remove">Remove Cats</string>
 </resources>
