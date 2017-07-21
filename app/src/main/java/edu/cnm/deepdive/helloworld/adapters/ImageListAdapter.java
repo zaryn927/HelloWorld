@@ -1,11 +1,14 @@
 package edu.cnm.deepdive.helloworld.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import edu.cnm.deepdive.helloworld.R;
 import edu.cnm.deepdive.helloworld.objects.Image;
@@ -41,7 +44,7 @@ public class ImageListAdapter extends BaseAdapter {
     return 0;
   }
 
-  @Override
+/*  @Override
   public View getView(int position, View convertView, ViewGroup parent) {
     if (convertView == null) {
       convertView = LayoutInflater.from(mContext)
@@ -52,6 +55,34 @@ public class ImageListAdapter extends BaseAdapter {
     TextView txtImageTitle = (TextView)convertView.findViewById(R.id.txtImageTitle);
     if (image != null && txtImageTitle != null) {
       txtImageTitle.setText(image.getTitle());
+    }
+    return convertView;
+  }*/
+
+  @Override
+  public View getView(int position, View convertView, ViewGroup parent) {
+    if (convertView == null) {
+      convertView = LayoutInflater.from(mContext).inflate(R.layout.image_list_item, parent, false);
+    }
+
+    Image image = (Image)getItem(position);
+    TextView txtImageTitle = (TextView)convertView.findViewById(R.id.txtImageTitle);
+    txtImageTitle.setText(image.getTitle());
+
+    ImageView imageView = (ImageView)convertView.findViewById(R.id.image);
+    Bitmap bitmap = image.getDownloadedImage(mContext);
+    if (bitmap != null) {
+      imageView.setImageBitmap(bitmap);
+    }
+    else {
+      if (mContext instanceof Activity) {
+        image.downloadImage((Activity) mContext, new Runnable() {
+          @Override
+          public void run() {
+            notifyDataSetChanged();
+          }
+        });
+      }
     }
     return convertView;
   }
